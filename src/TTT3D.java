@@ -15,6 +15,8 @@ import java.util.Random;
  * be 'X' or 'O' (X by default), and what difficulty they would like to select (Medium by default). The difficulty setting directly sets how many looks ahead the computer
  * will perform, up to 6. Any more and the computer wins too often (every time). It is integrated with a full GUI that is very user
  * friendly.
+ *
+ * Devigili 2012
  */
 
 public class TTT3D extends JFrame implements ActionListener
@@ -88,6 +90,7 @@ public class TTT3D extends JFrame implements ActionListener
 		setVisible(true);
 	}
 
+	
     /*
      * BoardPanel extends JPanel and allows the game board to be drawn behind the TicTacToeButtons without
      * interference.
@@ -424,11 +427,11 @@ public class TTT3D extends JFrame implements ActionListener
 		}
 	}
 
-  /*
-   * actionPerformed is the listener for all the buttons within the GUI. It takes in the input from the user if he/she clicks on a space, writes that information
-   * to both the internal board and the GUI board, and simply checks if that move was a win. If it was, end the game and display the winning move/winning message.
-   * If it wasn't, call computerPlays()
-   */
+	/*
+	* actionPerformed is the listener for all the buttons within the GUI. It takes in the input from the user if he/she clicks on a space, writes that information
+	* to both the internal board and the GUI board, and simply checks if that move was a win. If it was, end the game and display the winning move/winning message.
+	* If it wasn't, call computerPlays()
+	*/
 	public void actionPerformed(ActionEvent e)
 	{
 
