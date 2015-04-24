@@ -17,7 +17,8 @@ import java.util.Random;
  * friendly.
  */
 
-public class TTT3D extends JFrame implements ActionListener{
+public class TTT3D extends JFrame implements ActionListener
+{
 
 	//Global variables that will be accessed or changed by the game
 	private JButton newGameBtn;
@@ -44,8 +45,10 @@ public class TTT3D extends JFrame implements ActionListener{
 	private char config[][][];				//Configuration of the board that is manipulated in the minimax algorithm
 	private TicTacToeButton[][][] boardConfig;	//Button array allows direct access to all buttons on the GUI itself
 
-	public static void main(String a[]){
-	       new TTT3D();
+
+	public static void main(String a[])
+	{
+		new TTT3D();
 	}
 
 	/*
@@ -53,175 +56,174 @@ public class TTT3D extends JFrame implements ActionListener{
 	 * to send back to the main array
 	 */
 	private class TicTacToeButton extends JButton
-    {
-    	public int boxRow;
-    	public int boxColumn;
-    	public int boxBoard;
-    }
+  {
+		public int boxRow;
+		public int boxColumn;
+		public int boxBoard;
+  }
 
 	/*
 	 * OneMove is a class that holds information for one potential move. This is used to check if a certain
 	 * move is a win
 	 */
 	public class OneMove
-    {
+  {
 		int board;
-    	int row;
-    	int column;
-    }
+  	int row;
+  	int column;
+  }
 
 
 	/*
 	 * constructor
 	 */
-    public TTT3D()
-    {
-    	super("3D Tic-Tac-Toe!");
-    	setSize(380,500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setupBoard();
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setVisible(true);
+	public TTT3D()
+	{
+		super("3D Tic-Tac-Toe!");
+		setSize(380,500);
+	  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	  setupBoard();
+	  setResizable(false);
+	  setLocationRelativeTo(null);
+	  setVisible(true);
 	}
 
     /*
      * BoardPanel extends JPanel and allows the game board to be drawn behind the TicTacToeButtons without
      * interference.
      */
-    public class BoardPanel extends JPanel
-    {
-    	protected void paintComponent(Graphics g) {
-    	      super.paintComponent(g);
-
-    	      Graphics2D g2 = (Graphics2D) g;
-    	      g2.setStroke(new BasicStroke(2));
-
-    	      //Board 0
-    	      g2.drawLine(50, 87, 200, 87);
-    	      g2.drawLine(25, 129, 175, 129);
-    	      g2.drawLine(120, 60, 45, 160);
-    	      g2.drawLine(170, 60, 95, 160);
-
-    	      //Board 1
-    	      g2.drawLine(50, 212, 200, 212);
-    	      g2.drawLine(25, 254, 175, 254);
-    	      g2.drawLine(120, 185, 45, 285);
-    	      g2.drawLine(170, 185, 95, 285);
-
-    	      //Board 2
-    	      g2.drawLine(50, 337, 200, 337);
-    	      g2.drawLine(25, 379, 175, 379);
-    	      g2.drawLine(120, 310, 45, 410);
-    	      g2.drawLine(170, 310, 95, 410);
-
-    	      //Draws red line through the first and last winning position, always going through the second, indicating the location
-    	      //of the win
-    	      if(win)
-    	      {
-    	    	  g2.setColor(Color.RED);
-        	      g2.drawLine(finalWinButton[0].getBounds().x + 27, finalWinButton[0].getBounds().y + 20,
-        	    		  finalWinButton[2].getBounds().x + 27, finalWinButton[2].getBounds().y + 20);
-    	      }
-
-
-    	}
-    }
-
-    /*
-     * setupBoard is the methd that builds the GUI
-     */
-    public void setupBoard()
-    {
-    	//Creating the 2 arrays to represent the game
-    	config = new char[3][3][3];
-    	boardConfig = new TicTacToeButton[3][3][3];
-
-    	boardPanel = new BoardPanel();
-    	buttonPanel = new JPanel();
-    	textPanel = new JPanel();
-
-    	//New Game Button
-    	newGameBtn = new JButton("New Game");
-    	newGameBtn.setBounds(230, 370, 120, 30);
-        newGameBtn.addActionListener(new NewButtonListener());
-        newGameBtn.setName("newGameBtn");
-
-        //X/O Radio Button
-    	xRadButton = new JRadioButton("X", true);
-    	oRadButton = new JRadioButton("O");
-    	xRadButton.setBounds(250, 320, 40, 40);
-    	oRadButton.setBounds(300, 320, 40, 40);
-
-    	ButtonGroup xoSelect = new ButtonGroup();
-    	xoSelect.add(xRadButton);
-    	xoSelect.add(oRadButton);
-
-    	PieceListener xoListener = new PieceListener();
-    	xRadButton.addActionListener(xoListener);
-    	oRadButton.addActionListener(xoListener);
-
-    	//First move radio buttons
-    	humanFirstButton = new JRadioButton("Human First", true);
-    	cpuFirstButton = new JRadioButton("CPU First");
-    	humanFirstButton.setBounds(250, 110, 150, 40);
-    	cpuFirstButton.setBounds(250, 80, 150, 40);
-
-    	ButtonGroup firstSelect = new ButtonGroup();
-    	firstSelect.add(cpuFirstButton);
-    	firstSelect.add(humanFirstButton);
-
-    	FirstListener firstListener = new FirstListener();
-    	cpuFirstButton.addActionListener(firstListener);
-    	humanFirstButton.addActionListener(firstListener);
-
-    	//Difficulty radio buttons
-    	easyButton = new JRadioButton("Easy");
-    	mediumButton = new JRadioButton("Medium", true);
-    	hardButton = new JRadioButton("Hard");
-    	easyButton.setBounds(250, 190, 150, 40);
-    	mediumButton.setBounds(250, 220, 150, 40);
-    	hardButton.setBounds(250, 250, 150, 40);
-
-    	ButtonGroup difficultyGroup = new ButtonGroup();
-    	difficultyGroup.add(easyButton);
-    	difficultyGroup.add(mediumButton);
-    	difficultyGroup.add(hardButton);
-
-    	DifficultyListener difficultyListener = new DifficultyListener();
-    	easyButton.addActionListener(difficultyListener);
-    	mediumButton.addActionListener(difficultyListener);
-    	hardButton.addActionListener(difficultyListener);
-
-
-    	//Welcome title
-    	status = new JLabel("       Welcome to 3D Tic-Tac-Toe!");
-    	status.setFont(new Font("Tahoma", Font.PLAIN, 12));
-
-    	//Current score panel
-    	score = new JLabel("               You: " + humanScore + "   Me: " + computerScore);
-    	score.setFont(new Font("Tahoma", Font.BOLD, 15));
-
-    	//Variables that determine the locations of the TicTacToeButtons as they are placed within loops
-    	int rowShift = 28;
-    	int rowStart = 58;
-
-    	int xPos = 58;
-    	int yPos = 47;
-    	int width = 50;
-    	int height = 40;
-
-    	//Variables to keep track of the current button being placed
-    	int boardNum = 0;
-    	int rowNum = 0;
-    	int columnNum = 0;
-
-    	int boxCounter = 0;
-
-    	//Board loop
-    	for (int i = 0; i <= 2; i++)
+	public class BoardPanel extends JPanel
+	{
+		protected void paintComponent(Graphics g)
 		{
-    		//Row loop
+			super.paintComponent(g);
+
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setStroke(new BasicStroke(2));
+
+			//Board 0
+			g2.drawLine(50, 87, 200, 87);
+			g2.drawLine(25, 129, 175, 129);
+			g2.drawLine(120, 60, 45, 160);
+			g2.drawLine(170, 60, 95, 160);
+
+			//Board 1
+			g2.drawLine(50, 212, 200, 212);
+			g2.drawLine(25, 254, 175, 254);
+			g2.drawLine(120, 185, 45, 285);
+			g2.drawLine(170, 185, 95, 285);
+
+			//Board 2
+			g2.drawLine(50, 337, 200, 337);
+			g2.drawLine(25, 379, 175, 379);
+			g2.drawLine(120, 310, 45, 410);
+			g2.drawLine(170, 310, 95, 410);
+
+	    //Draws red line through the first and last winning position, always going through the second, indicating the location
+	    //of the win
+	    if(win)
+	    {
+	  	  g2.setColor(Color.RED);
+		      g2.drawLine(finalWinButton[0].getBounds().x + 27, finalWinButton[0].getBounds().y + 20,
+		    		  finalWinButton[2].getBounds().x + 27, finalWinButton[2].getBounds().y + 20);
+	    }
+		}
+	}
+
+  /*
+   * setupBoard is the methd that builds the GUI
+   */
+  public void setupBoard()
+  {
+  	//Creating the 2 arrays to represent the game
+  	config = new char[3][3][3];
+  	boardConfig = new TicTacToeButton[3][3][3];
+
+  	boardPanel = new BoardPanel();
+  	buttonPanel = new JPanel();
+  	textPanel = new JPanel();
+
+  	//New Game Button
+  	newGameBtn = new JButton("New Game");
+  	newGameBtn.setBounds(230, 370, 120, 30);
+    newGameBtn.addActionListener(new NewButtonListener());
+    newGameBtn.setName("newGameBtn");
+
+      //X/O Radio Button
+  	xRadButton = new JRadioButton("X", true);
+  	oRadButton = new JRadioButton("O");
+  	xRadButton.setBounds(250, 320, 40, 40);
+  	oRadButton.setBounds(300, 320, 40, 40);
+
+  	ButtonGroup xoSelect = new ButtonGroup();
+  	xoSelect.add(xRadButton);
+  	xoSelect.add(oRadButton);
+
+  	PieceListener xoListener = new PieceListener();
+  	xRadButton.addActionListener(xoListener);
+  	oRadButton.addActionListener(xoListener);
+
+  	//First move radio buttons
+  	humanFirstButton = new JRadioButton("Human First", true);
+  	cpuFirstButton = new JRadioButton("CPU First");
+  	humanFirstButton.setBounds(250, 110, 150, 40);
+  	cpuFirstButton.setBounds(250, 80, 150, 40);
+
+  	ButtonGroup firstSelect = new ButtonGroup();
+  	firstSelect.add(cpuFirstButton);
+  	firstSelect.add(humanFirstButton);
+
+  	FirstListener firstListener = new FirstListener();
+  	cpuFirstButton.addActionListener(firstListener);
+  	humanFirstButton.addActionListener(firstListener);
+
+  	//Difficulty radio buttons
+  	easyButton = new JRadioButton("Easy");
+  	mediumButton = new JRadioButton("Medium", true);
+  	hardButton = new JRadioButton("Hard");
+  	easyButton.setBounds(250, 190, 150, 40);
+  	mediumButton.setBounds(250, 220, 150, 40);
+  	hardButton.setBounds(250, 250, 150, 40);
+
+  	ButtonGroup difficultyGroup = new ButtonGroup();
+  	difficultyGroup.add(easyButton);
+  	difficultyGroup.add(mediumButton);
+  	difficultyGroup.add(hardButton);
+
+  	DifficultyListener difficultyListener = new DifficultyListener();
+  	easyButton.addActionListener(difficultyListener);
+  	mediumButton.addActionListener(difficultyListener);
+  	hardButton.addActionListener(difficultyListener);
+
+
+  	//Welcome title
+  	status = new JLabel("       Welcome to 3D Tic-Tac-Toe!");
+  	status.setFont(new Font("Tahoma", Font.PLAIN, 12));
+
+  	//Current score panel
+  	score = new JLabel("               You: " + humanScore + "   Me: " + computerScore);
+  	score.setFont(new Font("Tahoma", Font.BOLD, 15));
+
+  	//Variables that determine the locations of the TicTacToeButtons as they are placed within loops
+  	int rowShift = 28;
+  	int rowStart = 58;
+
+  	int xPos = 58;
+  	int yPos = 47;
+  	int width = 50;
+  	int height = 40;
+
+  	//Variables to keep track of the current button being placed
+  	int boardNum = 0;
+  	int rowNum = 0;
+  	int columnNum = 0;
+
+  	int boxCounter = 0;
+
+  	//Board loop
+  	for (int i = 0; i <= 2; i++)
+		{
+    	//Row loop
 			for (int j = 0; j <= 2; j++)
 			{
 				//Column loop
@@ -231,32 +233,33 @@ public class TTT3D extends JFrame implements ActionListener{
 					config[i][j][k] = '-';
 					boardConfig[i][j][k] = new TicTacToeButton();
 					boardConfig[i][j][k].setFont(new Font("Arial Rounded MT Bold", Font.ITALIC, 20));
-	                boardConfig[i][j][k].setText("");
-	                //Making it transparent and add
-	                boardConfig[i][j][k].setContentAreaFilled(false);
-	                boardConfig[i][j][k].setBorderPainted(false);
-	                boardConfig[i][j][k].setFocusPainted(false);
-	                //Placing the button
-	                boardConfig[i][j][k].setBounds(xPos, yPos, width, height);
-	                //Setting information variables
-	                boardConfig[i][j][k].setName(Integer.toString(boxCounter));
-	                boardConfig[i][j][k].boxBoard = boardNum;
-	                boardConfig[i][j][k].boxRow = rowNum;
-	                boardConfig[i][j][k].boxColumn = columnNum;
-	                //Adding action listener
-	                boardConfig[i][j][k].addActionListener(this);
+          boardConfig[i][j][k].setText("");
+          //Making it transparent and add
+          boardConfig[i][j][k].setContentAreaFilled(false);
+          boardConfig[i][j][k].setBorderPainted(false);
+          boardConfig[i][j][k].setFocusPainted(false);
+          //Placing the button
+          boardConfig[i][j][k].setBounds(xPos, yPos, width, height);
+          //Setting information variables
+          boardConfig[i][j][k].setName(Integer.toString(boxCounter));
+          boardConfig[i][j][k].boxBoard = boardNum;
+          boardConfig[i][j][k].boxRow = rowNum;
+          boardConfig[i][j][k].boxColumn = columnNum;
+          //Adding action listener
+          boardConfig[i][j][k].addActionListener(this);
 
-	                //Bump the column number 1, move the position that the next button will be placed to the right, and add the current button to the panel
-	                columnNum++;
-	                boxCounter++;
-	                xPos += 52;
-	                getContentPane().add(boardConfig[i][j][k]);
+          //Bump the column number 1, move the position that the next button will be placed to the right, and add the current button to the panel
+          columnNum++;
+          boxCounter++;
+          xPos += 52;
+          getContentPane().add(boardConfig[i][j][k]);
 				}
+
 				//Reset the column number, bump the row number one, move the position that the next button will be placed down and skew it so it matches with the game board
 				columnNum = 0;
-            	rowNum++;
-            	xPos = rowStart -= rowShift;
-                yPos += 41;
+      	rowNum++;
+      	xPos = rowStart -= rowShift;
+        yPos += 41;
 
 			}
 
@@ -267,46 +270,47 @@ public class TTT3D extends JFrame implements ActionListener{
 			boardNum++;
 			xPos = rowStart;
 			yPos += 2;
+
 		}
 
 
-    	//Panel setup
-    	boardPanel.setVisible(true);
-    	textPanel.setVisible(true);
-    	buttonPanel.setVisible(true);
-    	status.setVisible(true);
+  	//Panel setup
+  	boardPanel.setVisible(true);
+  	textPanel.setVisible(true);
+  	buttonPanel.setVisible(true);
+  	status.setVisible(true);
 
-    	textPanel.setLayout(new GridLayout(2,1));
-        textPanel.add(status);
-        textPanel.add(score);
-        textPanel.setBounds(80, 0, 380, 30);
+  	textPanel.setLayout(new GridLayout(2,1));
+    textPanel.add(status);
+    textPanel.add(score);
+    textPanel.setBounds(80, 0, 380, 30);
+
+    add(xRadButton);
+    add(oRadButton);
+    add(humanFirstButton);
+    add(cpuFirstButton);
+    add(easyButton);
+    add(mediumButton);
+    add(hardButton);
+    add(newGameBtn);
+    add(textPanel);
+    add(boardPanel);
 
 
-        add(xRadButton);
-        add(oRadButton);
-        add(humanFirstButton);
-        add(cpuFirstButton);
-        add(easyButton);
-        add(mediumButton);
-        add(hardButton);
-        add(newGameBtn);
-        add(textPanel);
-        add(boardPanel);
+    setVisible(true);
 
+  }
 
-        setVisible(true);
+	/*
+	* FirstListener is an ActionListener that sets the starting player based on the players input. If clicked it simply clears the board, sets the
+	* starting player, sets the title text, and checks the current difficulty. If the computer is selected to go first and the difficulty is not hard, the computer will
+	* play in a random spot to allow for a more competitive game
+	*/
+	class FirstListener implements ActionListener
+	{
 
-    }
-
-    /*
-     * FirstListener is an ActionListener that sets the starting player based on the players input. If clicked it simply clears the board, sets the
-     * starting player, sets the title text, and checks the current difficulty. If the computer is selected to go first and the difficulty is not hard, the computer will
-     * play in a random spot to allow for a more competitive game
-     */
-    class FirstListener implements ActionListener
-    {
-
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent arg0)
+		{
 			clearBoard();
 			status.setForeground(Color.BLACK);
 			status.setText("                      Good luck!");
@@ -314,59 +318,50 @@ public class TTT3D extends JFrame implements ActionListener{
 			if(cpuFirstButton.isSelected())
 			{
 				humanFirst = false;
+
 				if(!hardButton.isSelected())
-				{
 					computerPlayRandom();
-				}
 				else
-				{
 					computerPlays();
-				}
 			}
 			else
 			{
 				humanFirst = true;
 			}
 		}
+	}
 
-    }
-
-    /*
-     * NewButtonListener is an ActionListener that clears the board, sets the text, and starts a new game, and will go first if the radio button for the CPU
-     * to go first is selected
-     */
-    class NewButtonListener implements ActionListener
-    {
-
-		public void actionPerformed(ActionEvent arg0) {
+	/*
+	* NewButtonListener is an ActionListener that clears the board, sets the text, and starts a new game, and will go first if the radio button for the CPU
+	* to go first is selected
+	*/
+	class NewButtonListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent arg0)
+		{
 			clearBoard();
 			status.setForeground(Color.BLACK);
 			status.setText("                      Good luck!");
+
 			if(!humanFirst)
 			{
 				if(difficulty == 3)
-				{
 					computerPlays();
-				}
 				else
-				{
 					computerPlayRandom();
-				}
-
 			}
-
 		}
-
-    }
-    /*
-     * PieceListener is an ActionListener that changes the human and computer piece variables based on input from the user. It then clears the board
-     * and starts a new game
-     */
-    class PieceListener implements ActionListener
-    {
+	}
+  /*
+   * PieceListener is an ActionListener that changes the human and computer piece variables based on input from the user. It then clears the board
+   * and starts a new game
+   */
+  class PieceListener implements ActionListener
+  {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent arg0)
+		{
 			clearBoard();
 			status.setForeground(Color.BLACK);
 			status.setText("                      Good luck!");
@@ -385,28 +380,23 @@ public class TTT3D extends JFrame implements ActionListener{
 			if(!humanFirst)
 			{
 				if(difficulty == 3)
-				{
 					computerPlays();
-				}
 				else
-				{
 					computerPlayRandom();
-				}
 			}
 		}
-
-
 	}
 
-    /*
-     * DifficultyListener is an ActionListener that manipulates the difficulty variable and allows the user to change how aggresive or smart the
-     * computer will play. The class itself just changes the global difficulty variable, and then starts a new game
-     */
-    class DifficultyListener implements ActionListener
-    {
+  /*
+   * DifficultyListener is an ActionListener that manipulates the difficulty variable and allows the user to change how aggresive or smart the
+   * computer will play. The class itself just changes the global difficulty variable, and then starts a new game
+   */
+  class DifficultyListener implements ActionListener
+  {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent arg0)
+		{
 			clearBoard();
 			status.setForeground(Color.BLACK);
 			status.setText("                      Good luck!");
@@ -430,49 +420,45 @@ public class TTT3D extends JFrame implements ActionListener{
 			if(!humanFirst)
 			{
 				if(difficulty == 3)
-				{
 					computerPlays();
-				}
 				else
-				{
 					computerPlayRandom();
-				}
 			}
 		}
+  }
 
-    }
-
-    /*
-     * actionPerformed is the listener for all the buttons within the GUI. It takes in the input from the user if he/she clicks on a space, writes that information
-     * to both the internal board and the GUI board, and simply checks if that move was a win. If it was, end the game and display the winning move/winning message.
-     * If it wasn't, call computerPlays()
-     */
-	public void actionPerformed(ActionEvent e) {
+  /*
+   * actionPerformed is the listener for all the buttons within the GUI. It takes in the input from the user if he/she clicks on a space, writes that information
+   * to both the internal board and the GUI board, and simply checks if that move was a win. If it was, end the game and display the winning move/winning message.
+   * If it wasn't, call computerPlays()
+   */
+	public void actionPerformed(ActionEvent e)
+	{
 
 		//Getting the button clicked's information and setting the arrays accordingly
 		TicTacToeButton button = (TicTacToeButton)e.getSource();
 		config[button.boxBoard][button.boxRow][button.boxColumn] = humanPiece;
-        boardConfig[button.boxBoard][button.boxRow][button.boxColumn].setText(Character.toString(humanPiece));
-        boardConfig[button.boxBoard][button.boxRow][button.boxColumn].setEnabled(false);
+    boardConfig[button.boxBoard][button.boxRow][button.boxColumn].setText(Character.toString(humanPiece));
+    boardConfig[button.boxBoard][button.boxRow][button.boxColumn].setEnabled(false);
 
-        OneMove newMove = new OneMove();
-        newMove.board = button.boxBoard;
-        newMove.row = button.boxRow;
-        newMove.column = button.boxColumn;
+    OneMove newMove = new OneMove();
+    newMove.board = button.boxBoard;
+    newMove.row = button.boxRow;
+    newMove.column = button.boxColumn;
 
-        if(checkWin(humanPiece, newMove))
-        {
-        	status.setText("You beat me! Press New Game to play again.");
-        	status.setForeground(Color.RED);
-        	humanScore++;
-        	win = true;
-        	disableBoard();
-        	updateScore();
-        }
-        else
-        {
-        	computerPlays();
-        }
+    if(checkWin(humanPiece, newMove))
+    {
+    	status.setText("You beat me! Press New Game to play again.");
+    	status.setForeground(Color.RED);
+    	humanScore++;
+    	win = true;
+    	disableBoard();
+    	updateScore();
+    }
+    else
+    {
+    	computerPlays();
+    }
 	}
 
 	/*
@@ -492,17 +478,17 @@ public class TTT3D extends JFrame implements ActionListener{
 		repaint();
 		win = false;
 		lookAheadCounter = 0;
+
 		for (int i = 0; i <= 2; i++)
 		{
 			for (int j = 0; j <= 2; j++)
 			{
 				for(int k = 0; k <= 2; k++)
 				{
-	        		config[i][j][k] = '-';
-	        		boardConfig[i][j][k].setText("");
-	        		boardConfig[i][j][k].setEnabled(true);
+	    		config[i][j][k] = '-';
+	    		boardConfig[i][j][k].setText("");
+	    		boardConfig[i][j][k].setEnabled(true);
 				}
-
 			}
 		}
 
@@ -523,27 +509,23 @@ public class TTT3D extends JFrame implements ActionListener{
 			{
 				for(int k = 0; k <= 2; k++)
 				{
-
 					if(contains(finalWin, Integer.parseInt(boardConfig[i][j][k].getName())))
 					{
-
 						boardConfig[i][j][k].setEnabled(true);
 						boardConfig[i][j][k].setForeground(Color.RED);
 						finalWinButton[index] = boardConfig[i][j][k];
 						index++;
-
 					}
 					else
 					{
 						boardConfig[i][j][k].setEnabled(false);
 					}
-
 				}
-
 			}
 		}
 
 		repaint();
+
 	}
 
 	/*
@@ -640,6 +622,7 @@ public class TTT3D extends JFrame implements ActionListener{
 								//If the player is on easy, just calculate the heuristic value for every current possible move, no looking ahead
 								hValue = heuristic();
 							}
+
 							lookAheadCounter = 0;
 
 							//CPU chooses the best hValue out of every move
@@ -700,10 +683,8 @@ public class TTT3D extends JFrame implements ActionListener{
 					{
 						for(int k = 0; k <= 2; k++)
 						{
-
 							if(config[i][j][k] == '-')
 							{
-
 								nextMove = new OneMove();
 								nextMove.board = i;
 								nextMove.row = j;
@@ -796,7 +777,6 @@ public class TTT3D extends JFrame implements ActionListener{
 		{
 			return heuristic();
 		}
-
 	}
 
 	/*
@@ -942,13 +922,10 @@ public class TTT3D extends JFrame implements ActionListener{
 				for(int k = 0; k <= 2; k++)
 				{
 					if(config[i][j][k] == c || config[i][j][k] == '-')
-					{
 						gameBoard[counter] = 1;
-					}
 					else
-					{
 						gameBoard[counter] = 0;
-					}
+
 					counter++;
 				}
 			}
@@ -969,16 +946,11 @@ public class TTT3D extends JFrame implements ActionListener{
 					finalWin[j] = wins[i][j];
 					//If all 3 moves of the current winning combination are occupied by char c
 					if(counter == 3)
-					{
 						winCounter++;
-					}
 				}
 			}
 		}
 
 		return winCounter;
 	}
-
-
-
 }
