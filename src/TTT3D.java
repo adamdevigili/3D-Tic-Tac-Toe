@@ -62,6 +62,8 @@ public class TTT3D extends JFrame implements ActionListener
 		public int boxRow;
 		public int boxColumn;
 		public int boxBoard;
+    //this.setFont(new Font("Arial", Font.PLAIN, 10));
+
 	}
 
 	/*
@@ -90,7 +92,7 @@ public class TTT3D extends JFrame implements ActionListener
 		setVisible(true);
 	}
 
-	
+
     /*
      * BoardPanel extends JPanel and allows the game board to be drawn behind the TicTacToeButtons without
      * interference.
@@ -152,11 +154,11 @@ public class TTT3D extends JFrame implements ActionListener
 		newGameBtn.addActionListener(new NewButtonListener());
 		newGameBtn.setName("newGameBtn");
 
-		  //X/O Radio Button
+		//X/O Radio Button
 		xRadButton = new JRadioButton("X", true);
 		oRadButton = new JRadioButton("O");
-		xRadButton.setBounds(250, 320, 40, 40);
-		oRadButton.setBounds(300, 320, 40, 40);
+		xRadButton.setBounds(250, 320, 50, 50);
+		oRadButton.setBounds(300, 320, 50, 50);
 
 		ButtonGroup xoSelect = new ButtonGroup();
 		xoSelect.add(xRadButton);
@@ -208,13 +210,13 @@ public class TTT3D extends JFrame implements ActionListener
 		score.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		//Variables that determine the locations of the TicTacToeButtons as they are placed within loops
-		int rowShift = 28;
-		int rowStart = 58;
+		int rowShift = 25;
+		int rowStart = 50;
 
 		int xPos = 58;
-		int yPos = 47;
-		int width = 50;
-		int height = 40;
+		int yPos = 43;
+		int width = 60;
+		int height = 50;
 
 		//Variables to keep track of the current button being placed
 		int boardNum = 0;
@@ -235,7 +237,7 @@ public class TTT3D extends JFrame implements ActionListener
 					//Creating the new button, setting it to be empty in both arrays
 					config[i][j][k] = '-';
 					boardConfig[i][j][k] = new TicTacToeButton();
-					boardConfig[i][j][k].setFont(new Font("Arial Rounded MT Bold", Font.ITALIC, 20));
+					boardConfig[i][j][k].setFont(new Font("Arial Bold", Font.ITALIC, 20));
 					boardConfig[i][j][k].setText("");
 					//Making it transparent and add
 					boardConfig[i][j][k].setContentAreaFilled(false);
@@ -769,7 +771,7 @@ public class TTT3D extends JFrame implements ActionListener
 						}
 					}
 				}
-				
+
 				return beta;
 			}
 		}
