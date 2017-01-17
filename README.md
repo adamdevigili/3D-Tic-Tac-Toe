@@ -6,7 +6,7 @@ Description
 
 Screenshots
 -----------
-![Screen 1](screenshots/screen1.jpg?raw=true "Screen 1")
+![Screen 1](https://github.com/adamdevigili/3D-Tic-Tac-Toe/blob/master/screenshots/screen1.png?raw=true "Screen 1")
 
 Compilation/Execution
 ------------
