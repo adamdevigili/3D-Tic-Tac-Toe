@@ -6,7 +6,7 @@ Description
 
 Screenshots
 -----------
-![Alt text](/screenshots/screen1.jpg?raw=true "Screen 1")
+![Screen 1](screenshots/screen1.jpg?raw=true "Screen 1")
 
 Compilation/Execution
 ------------
