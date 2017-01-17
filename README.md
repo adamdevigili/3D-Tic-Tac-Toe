@@ -10,8 +10,8 @@ Screenshots
 
 Compilation/Execution
 ------------
-```cd /whatever/folder/3D-Tic-Tac-Toe/src```
+```$ cd /whatever/folder/3D-Tic-Tac-Toe/src```
 
-```javac TTT3D.java```
+```$ javac TTT3D.java```
 
-```java TTT3D```
+```$ java TTT3D```
