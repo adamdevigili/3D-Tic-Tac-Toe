@@ -213,7 +213,7 @@ public class TTT3D extends JFrame implements ActionListener
 		int rowShift = 25;
 		int rowStart = 50;
 
-		int xPos = 58;
+		int xPos = 48;
 		int yPos = 43;
 		int width = 60;
 		int height = 50;
